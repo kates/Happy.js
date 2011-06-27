@@ -352,3 +352,43 @@ test("check message position after", function() {
 	equal($('#textinput', form).next().html(), "Is required");
 });
 
+test("check custom message", function() {
+	var form = fixture("<input type='text' id='textinput' />");
+	form.isHappy({
+		fields: {
+			'#textinput': {
+				required: true,
+				message: "Is required",
+				test: function(v) {
+					if (v.length < 3) {
+						this.message = "minimum 3 characters required";
+						return false;
+					} else if (v.length > 5) {
+						this.message = "limited to maximum 5 characters";
+						return false;
+					}
+					return true;
+				}
+			}
+		},
+		testMode: true
+	});
+
+	form.trigger('submit');
+	equal($('.unhappy').length, 1);
+	equal($('.unhappyMessage').length, 1);
+	equal($('.unhappyMessage').text(), "Is required");
+	
+	$("#textinput").val("ab");
+	form.trigger('submit');
+	equal($('.unhappy').length, 1);
+	equal($('.unhappyMessage').length, 1);
+	equal($('.unhappyMessage').text(), "minimum 3 characters required");
+
+	$("#textinput").val("abcdef");
+	form.trigger('submit');
+	equal($('.unhappy').length, 1);
+	equal($('.unhappyMessage').length, 1);
+	equal($('.unhappyMessage').text(), "limited to maximum 5 characters");
+});
+

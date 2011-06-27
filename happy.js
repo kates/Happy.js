@@ -45,7 +45,7 @@
           required = !!el.get(0).attributes.getNamedItem('required') || opts.required,
           password = (field.attr('type') === 'password'),
           arg = isFunction(opts.arg) ? opts.arg() : opts.arg;
-        
+
         // clean it or trim it
         if (isFunction(opts.clean)) {
           val = opts.clean(el.val());
@@ -67,7 +67,8 @@
         } else if (gotFunc) {
           error = !opts.test(val, arg);
         }
-        
+        errorEl.text(opts.message);
+
         if (error) {
           el.addClass('unhappy')[opts.where](errorEl);
           return false;
