@@ -33,7 +33,8 @@
           id: selector.slice(1) + '_unhappy'
         },
         errorEl = $(error.id).length > 0 ? $(error.id) : getError(error);
-        
+
+      opts.where = opts.where || "before";
       fields.push(field);
       field.testValid = function (submit) {
         var val,
@@ -68,7 +69,7 @@
         }
         
         if (error) {
-          el.addClass('unhappy').before(errorEl);
+          el.addClass('unhappy')[opts.where](errorEl);
           return false;
         } else {
           temp = errorEl.get(0);

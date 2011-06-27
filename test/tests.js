@@ -316,3 +316,39 @@ test("check return value", function () {
     var form = fixture('');
     equal(form.isHappy({fields: {}}), form);
 });
+
+test("check message position before", function() {
+	var form = fixture("<input type='text' id='textinput' />");
+	form.isHappy({
+		fields: {
+			"#textinput": {
+				required: true,
+				message: "Is required"
+			}
+		},
+		testMode: true
+	});
+	form.trigger('submit');
+	equal($('.unhappy').length, 1);
+	equal($('.unhappyMessage').length, 1);
+	equal($('#textinput', form).prev().html(), "Is required");
+});
+
+test("check message position after", function() {
+	var form = fixture("<input type='text' id='textinput' />");
+	form.isHappy({
+		fields: {
+			"#textinput": {
+				required: true,
+				message: "Is required",
+				where: "after"
+			}
+		},
+		testMode: true
+	});
+	form.trigger('submit');
+	equal($('.unhappy').length, 1);
+	equal($('.unhappyMessage').length, 1);
+	equal($('#textinput', form).next().html(), "Is required");
+});
+
