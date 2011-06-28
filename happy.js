@@ -34,7 +34,7 @@
         },
         errorEl = $(error.id).length > 0 ? $(error.id) : getError(error);
 
-      opts.where = opts.where || "before";
+      opts.where = /^(before|after)$/.test(opts.where) ? opts.where : "before";
       fields.push(field);
       field.testValid = function (submit) {
         var val,
